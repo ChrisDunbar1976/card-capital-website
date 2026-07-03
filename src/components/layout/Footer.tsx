@@ -98,6 +98,9 @@ export function Footer() {
           }}
         >
           &copy; {new Date().getFullYear()} Rhubarb Press Ltd. All rights reserved.
+          <span className="block mt-1" style={{ color: 'var(--color-text-muted)', opacity: 0.6 }}>
+            v{process.env.NEXT_PUBLIC_APP_VERSION}
+          </span>
         </div>
       </div>
     </footer>

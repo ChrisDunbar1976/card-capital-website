@@ -84,7 +84,7 @@ export default function Home() {
           }}
         />
 
-        <div className="max-w-6xl mx-auto px-4 pt-[1svh] pb-[6svh] sm:pt-[2svh] sm:pb-[8svh] text-center relative">
+        <div className="max-w-6xl mx-auto px-4 pt-2 pb-[6svh] sm:pt-4 sm:pb-[8svh] text-center relative">
           <Image
             src="/card-capital-logo.png"
             alt="Card Capital"

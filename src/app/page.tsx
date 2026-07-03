@@ -91,7 +91,7 @@ export default function Home() {
             width={537}
             height={580}
             priority
-            className="mx-auto mb-[3vw] sm:mb-6 w-[65vw] sm:w-80 md:w-96 lg:w-[28rem] h-auto"
+            className="mx-auto mb-[2vw] sm:mb-4 w-[45vw] sm:w-56 md:w-64 lg:w-72 h-auto"
           />
 
           <h1

@@ -18,6 +18,11 @@
   --color-accent-cream: #E8D5C4;
   --color-accent-cream-light: #F0E2D6;
 
+  /* Saloon wood tones */
+  --color-wood-dark: #3B291D;
+  --color-wood-mid: #5C4030;
+  --color-wood-light: #7A5842;
+
   --color-text-primary: #FFFFFF;
   --color-text-secondary: #B8CCBE;
   --color-text-muted: #6B8C74;
@@ -26,6 +31,8 @@
   --color-surface-divider: rgba(255, 255, 255, 0.1);
   --color-surface-highlight: rgba(212, 168, 75, 0.15);
   --color-surface-overlay: rgba(0, 0, 0, 0.5);
+  --color-gold-hairline: rgba(212, 168, 75, 0.18);
+  --color-gold-hairline-bright: rgba(212, 168, 75, 0.35);
 
   /* Fluid Typography */
   --font-size-fluid-sm: clamp(0.8125rem, 0.7rem + 0.35vw, 1rem);
@@ -34,7 +41,8 @@
   --font-size-fluid-xl: clamp(1.25rem, 1.05rem + 0.65vw, 1.75rem);
   --font-size-fluid-2xl: clamp(1.5rem, 1.2rem + 1vw, 2.25rem);
   --font-size-fluid-3xl: clamp(1.875rem, 1.5rem + 1.25vw, 2.75rem);
-  --font-size-fluid-4xl: clamp(1.25rem, 1rem + 1vw, 2rem);
+  --font-size-fluid-4xl: clamp(2rem, 1.5rem + 2vw, 3.25rem);
+  --font-size-fluid-5xl: clamp(2.5rem, 1.75rem + 3.5vw, 4.75rem);
 
   /* Fluid Spacing */
   --spacing-fluid-xs: clamp(0.25rem, 0.15rem + 0.3vw, 0.5rem);
@@ -45,7 +53,25 @@
   --spacing-fluid-2xl: clamp(2rem, 1.35rem + 2vw, 3.5rem);
   --spacing-fluid-3xl: clamp(3rem, 2rem + 3vw, 5rem);
 
+  /* Shadows */
+  --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.45);
+  --shadow-lift: 0 16px 40px rgba(0, 0, 0, 0.55);
+
+  /* Motion */
+  --ease-out-quart: cubic-bezier(0.22, 1, 0.36, 1);
+
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-fraunces), "Georgia", serif;
+}
+
+:root {
+  /* Gold gradient — headline fills, button sheens */
+  --gradient-gold: linear-gradient(
+    135deg,
+    #e0be6a 0%,
+    #d4a84b 45%,
+    #a87f2e 100%
+  );
 }
 
 html {
@@ -63,4 +89,287 @@ body {
 :focus-visible {
   outline: 2px solid var(--color-accent-gold);
   outline-offset: 2px;
+}
+
+/* ---------------------------------------------------------------------------
+   Gold gradient headline text
+--------------------------------------------------------------------------- */
+.text-gradient-gold {
+  background: var(--gradient-gold);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* ---------------------------------------------------------------------------
+   Felt surface — layered texture for hero + final CTA
+--------------------------------------------------------------------------- */
+.felt-surface {
+  background-color: var(--color-bg-primary);
+  background-image:
+    radial-gradient(
+      ellipse 70% 55% at 50% 30%,
+      rgba(27, 107, 58, 0.28) 0%,
+      transparent 70%
+    ),
+    url("/table-texture.webp");
+  background-size: cover, cover;
+  background-position: center, center;
+}
+
+.felt-vignette::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 90% 80% at 50% 45%,
+    transparent 40%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
+}
+
+/* ---------------------------------------------------------------------------
+   3D card flip utilities
+--------------------------------------------------------------------------- */
+.flip-card {
+  perspective: 1200px;
+}
+.flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+.flip-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: inherit;
+  overflow: hidden;
+}
+.flip-front {
+  transform: rotateY(180deg);
+}
+
+/* ---------------------------------------------------------------------------
+   Hover vocabulary — lifts, not scales. Pointer devices only.
+--------------------------------------------------------------------------- */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .hover-lift {
+    transition:
+      transform 150ms var(--ease-out-quart),
+      box-shadow 150ms var(--ease-out-quart),
+      border-color 150ms var(--ease-out-quart);
+  }
+  .hover-lift:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lift);
+    border-color: var(--color-gold-hairline-bright);
+  }
+
+  .hover-lift-lg {
+    transition:
+      transform 200ms var(--ease-out-quart),
+      filter 200ms var(--ease-out-quart);
+  }
+  .hover-lift-lg:hover {
+    transform: translateY(-8px);
+    filter: drop-shadow(0 0 24px rgba(212, 168, 75, 0.35));
+  }
+
+  .card-tilt {
+    transition: transform 200ms var(--ease-out-quart);
+    transform-style: preserve-3d;
+  }
+  .card-tilt:hover {
+    transform: perspective(800px) rotateX(3deg) rotateY(-4deg)
+      translateY(-4px);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Game-name marquee — three rows, alternating directions
+--------------------------------------------------------------------------- */
+@keyframes marquee-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes marquee-right {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.marquee {
+  overflow: hidden;
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+}
+.marquee-track {
+  display: flex;
+  gap: 0.75rem;
+  width: max-content;
+}
+.marquee-track-left {
+  animation: marquee-left 38s linear infinite;
+}
+.marquee-track-right {
+  animation: marquee-right 42s linear infinite;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+/* ---------------------------------------------------------------------------
+   Portrait rail — horizontal scroll snap
+--------------------------------------------------------------------------- */
+.portrait-rail {
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.portrait-rail::-webkit-scrollbar {
+  display: none;
+}
+.portrait-rail > * {
+  scroll-snap-align: start;
+}
+
+/* ---------------------------------------------------------------------------
+   Wooden nameplate
+--------------------------------------------------------------------------- */
+.nameplate {
+  background: linear-gradient(
+    180deg,
+    var(--color-wood-light) 0%,
+    var(--color-wood-mid) 35%,
+    var(--color-wood-dark) 100%
+  );
+  border: 1px solid rgba(212, 168, 75, 0.3);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+/* ---------------------------------------------------------------------------
+   Idle float for dealt hero cards (post-sequence)
+--------------------------------------------------------------------------- */
+@keyframes idle-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+.idle-float {
+  animation: idle-float 6s ease-in-out infinite;
+}
+
+/* ---------------------------------------------------------------------------
+   Scroll cue pulse
+--------------------------------------------------------------------------- */
+@keyframes cue-pulse {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(4px);
+  }
+}
+.scroll-cue {
+  animation: cue-pulse 2.2s ease-in-out infinite;
+}
+
+/* ---------------------------------------------------------------------------
+   Hero text entrances — CSS-only so SSR HTML stays visible without JS.
+   `backwards` fill hides each element only during its delay window.
+--------------------------------------------------------------------------- */
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-enter-logo {
+    animation: hero-rise 0.5s var(--ease-out-quart) 0.1s backwards;
+  }
+  .hero-enter-h1a {
+    animation: hero-rise 0.55s var(--ease-out-quart) 1.1s backwards;
+  }
+  .hero-enter-h1b {
+    animation: hero-rise 0.55s var(--ease-out-quart) 1.28s backwards;
+  }
+  .hero-enter-sub {
+    animation: hero-rise 0.5s var(--ease-out-quart) 1.7s backwards;
+  }
+  .hero-enter-cta {
+    animation: hero-rise 0.5s var(--ease-out-quart) 1.82s backwards;
+  }
+  .hero-enter-trust {
+    animation: hero-rise 0.5s var(--ease-out-quart) 1.94s backwards;
+  }
+
+  /* Repeat visit this session — compress the wait */
+  [data-cc-replay] .hero-enter-logo {
+    animation-delay: 0.05s;
+  }
+  [data-cc-replay] .hero-enter-h1a {
+    animation-delay: 0.12s;
+  }
+  [data-cc-replay] .hero-enter-h1b {
+    animation-delay: 0.2s;
+  }
+  [data-cc-replay] .hero-enter-sub {
+    animation-delay: 0.28s;
+  }
+  [data-cc-replay] .hero-enter-cta {
+    animation-delay: 0.34s;
+  }
+  [data-cc-replay] .hero-enter-trust {
+    animation-delay: 0.4s;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Reduced motion — kill all CSS animation
+--------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track-left,
+  .marquee-track-right,
+  .idle-float,
+  .scroll-cue {
+    animation: none;
+  }
 }

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Fraunces, Inter } from "next/font/google";
+import { AuthProvider } from "@/components/auth/AuthProvider";
+import { MotionProvider } from "@/components/motion/MotionProvider";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import "./globals.css";
@@ -7,6 +9,13 @@ import "./globals.css";
 const inter = Inter({
   subsets: ["latin"],
   display: "swap",
+});
+
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-fraunces",
+  axes: ["opsz"],
 });
 
 export const metadata: Metadata = {
@@ -32,11 +41,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.className} h-full antialiased`}>
+    <html
+      lang="en"
+      className={`${inter.className} ${fraunces.variable} h-full antialiased`}
+    >
       <body className="min-h-full flex flex-col">
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <AuthProvider>
+          <MotionProvider>
+            <Header />
+            <main className="flex-1">{children}</main>
+            <Footer />
+          </MotionProvider>
+        </AuthProvider>
       </body>
     </html>
   );

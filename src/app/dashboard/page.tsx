@@ -48,13 +48,6 @@ function memberSince(iso: string): string {
 
 const QUICK_LINKS = [
   {
-    title: 'Browse the games',
-    body: 'All 62 games in the library — find your next table.',
-    href: '/play',
-    cta: 'Pick a game',
-    suit: '♠',
-  },
-  {
     title: 'Join the community',
     body: 'Strategy talk, rules debates and table stories.',
     href: '/community',
@@ -373,8 +366,56 @@ export default async function DashboardPage() {
           </div>
         </div>
 
-        {/* Quick links */}
+        {/* Bottom row — profile + quick links */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          {/* Profile */}
+          <div
+            className="rounded-2xl p-6"
+            style={{
+              backgroundColor: 'var(--color-bg-card)',
+              border: '1px solid var(--color-gold-hairline)',
+              boxShadow: 'var(--shadow-card)',
+            }}
+          >
+            <span
+              className="text-xl"
+              style={{ color: 'var(--color-accent-gold)' }}
+              aria-hidden="true"
+            >
+              ♠
+            </span>
+            <h3
+              className="mt-2 mb-1 font-semibold"
+              style={{ fontFamily: 'var(--font-display)' }}
+            >
+              {name}
+            </h3>
+            <p
+              className="mb-1 text-sm"
+              style={{ color: 'var(--color-text-secondary)' }}
+            >
+              {user.email}
+            </p>
+            <p
+              className="mb-1 text-sm"
+              style={{ color: 'var(--color-text-muted)' }}
+            >
+              {user.app_metadata?.provider === 'google'
+                ? 'Signed in with Google'
+                : user.app_metadata?.provider === 'apple'
+                  ? 'Signed in with Apple'
+                  : 'Email account'}
+            </p>
+            <p
+              className="text-sm"
+              style={{ color: 'var(--color-text-muted)' }}
+            >
+              {profile
+                ? `Member since ${memberSince(profile.created_at)}`
+                : 'New to the table'}
+            </p>
+          </div>
+
           {QUICK_LINKS.map((link) => (
             <Link
               key={link.href}

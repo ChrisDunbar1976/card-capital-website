@@ -84,18 +84,18 @@ export default function Home() {
           }}
         />
 
-        <div className="max-w-6xl mx-auto px-4 pt-8 pb-16 sm:pt-12 sm:pb-20 text-center relative">
+        <div className="max-w-6xl mx-auto px-4 pt-[3svh] pb-[6svh] sm:pt-[4svh] sm:pb-[8svh] text-center relative">
           <Image
             src="/card-capital-logo.png"
             alt="Card Capital"
             width={350}
             height={350}
             priority
-            className="mx-auto mb-6 w-[280px] h-[280px] sm:w-[350px] sm:h-[350px]"
+            className="mx-auto mb-[3vw] sm:mb-6 w-[55vw] sm:w-72 md:w-80 lg:w-[22rem] h-auto"
           />
 
           <h1
-            className="font-bold tracking-tight mb-4"
+            className="font-bold tracking-tight mb-[2vw] sm:mb-4"
             style={{
               fontSize: "var(--font-size-fluid-4xl)",
               lineHeight: 1.1,
@@ -106,7 +106,7 @@ export default function Home() {
           </h1>
 
           <p
-            className="max-w-xl mx-auto mb-4"
+            className="max-w-xl mx-auto mb-[2vw] sm:mb-4"
             style={{
               fontSize: "var(--font-size-fluid-lg)",
               color: "var(--color-text-secondary)",
@@ -116,7 +116,7 @@ export default function Home() {
             the Western Saloon.
           </p>
           <p
-            className="max-w-xl mx-auto mb-8"
+            className="max-w-xl mx-auto mb-[4vw] sm:mb-8"
             style={{
               fontSize: "var(--font-size-fluid-lg)",
               color: "var(--color-text-secondary)",
@@ -128,7 +128,7 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <Link
               href="/play"
-              className="inline-flex items-center px-6 py-3 rounded-xl font-semibold text-base transition-all hover:brightness-110 hover:scale-[1.02]"
+              className="inline-flex items-center px-6 py-3 rounded-xl font-semibold text-sm sm:text-base transition-all hover:brightness-110 hover:scale-[1.02]"
               style={{
                 backgroundColor: "var(--color-accent-gold)",
                 color: "var(--color-text-inverse)",
@@ -138,7 +138,7 @@ export default function Home() {
             </Link>
             <Link
               href="#features"
-              className="inline-flex items-center px-6 py-3 rounded-xl font-semibold text-base border transition-colors hover:bg-white/5"
+              className="inline-flex items-center px-6 py-3 rounded-xl font-semibold text-sm sm:text-base border transition-colors hover:bg-white/5"
               style={{
                 borderColor: "var(--color-surface-divider)",
                 color: "var(--color-text-secondary)",
@@ -149,11 +149,11 @@ export default function Home() {
           </div>
 
           {/* Game ticker */}
-          <div className="flex flex-wrap justify-center gap-3 mt-12">
+          <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mt-8 sm:mt-12">
             {GAMES.map((game) => (
               <span
                 key={game.name}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm"
+                className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm"
                 style={{
                   backgroundColor: "var(--color-bg-card)",
                   border: "1px solid var(--color-surface-divider)",
@@ -165,7 +165,7 @@ export default function Home() {
               </span>
             ))}
             <span
-              className="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium"
+              className="inline-flex items-center px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm font-medium"
               style={{
                 backgroundColor: "var(--color-surface-highlight)",
                 color: "var(--color-accent-gold)",
@@ -184,7 +184,7 @@ export default function Home() {
       />
 
       {/* Three Pillars */}
-      <section className="max-w-6xl mx-auto px-4 py-16 sm:py-24">
+      <section className="max-w-6xl mx-auto px-4 py-[6svh] sm:py-24">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {PILLARS.map((pillar) => (
             <Link
@@ -226,7 +226,7 @@ export default function Home() {
       {/* Features Grid */}
       <section
         id="features"
-        className="py-16 sm:py-24"
+        className="py-[6svh] sm:py-24"
         style={{ backgroundColor: "var(--color-bg-secondary)" }}
       >
         <div className="max-w-6xl mx-auto px-4">
@@ -275,7 +275,7 @@ export default function Home() {
       </section>
 
       {/* CTA */}
-      <section className="max-w-6xl mx-auto px-4 py-16 sm:py-24 text-center">
+      <section className="max-w-6xl mx-auto px-4 py-[6svh] sm:py-24 text-center">
         <h2
           className="font-bold mb-4"
           style={{

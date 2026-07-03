@@ -109,7 +109,7 @@ export default async function DashboardPage() {
                 lineHeight: 1.1,
               }}
             >
-              {greeting()}, {firstName}.
+              {greeting()}, {firstName}
             </h1>
             <p
               style={{

@@ -91,11 +91,11 @@ export default function Home() {
             width={537}
             height={580}
             priority
-            className="mx-auto mb-[2vw] sm:mb-4 w-[38vw] sm:w-48 md:w-56 lg:w-60 h-auto"
+            className="mx-auto mb-[2vw] sm:mb-[1.125rem] w-[38vw] sm:w-48 md:w-56 lg:w-60 h-auto"
           />
 
           <h1
-            className="font-bold tracking-tight mb-[2vw] sm:mb-4"
+            className="font-bold tracking-tight mb-[2vw] sm:mb-[1.125rem]"
             style={{
               fontSize: "var(--font-size-fluid-4xl)",
               lineHeight: 1.1,

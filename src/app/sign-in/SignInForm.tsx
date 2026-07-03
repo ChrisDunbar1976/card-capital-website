@@ -35,7 +35,7 @@ function FieldLabel({
 export function SignInForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirect = searchParams.get('redirect') ?? '/';
+  const redirect = searchParams.get('redirect') ?? '/dashboard';
   const urlError = searchParams.get('error');
 
   const [mode, setMode] = useState<Mode>(
@@ -76,7 +76,7 @@ export function SignInForm() {
     if (mode === 'forgot') {
       setBusy(true);
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/callback?next=/`,
+        redirectTo: `${window.location.origin}/callback?next=/dashboard`,
       });
       setBusy(false);
       if (error) {
@@ -100,7 +100,7 @@ export function SignInForm() {
         email,
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/callback?next=/`,
+          emailRedirectTo: `${window.location.origin}/callback?next=/dashboard`,
           data: displayName.trim()
             ? { display_name: displayName.trim() }
             : undefined,

@@ -116,12 +116,17 @@ export function Header() {
 
           {!loading && user && (
             <div className="flex items-center gap-3">
-              <span
-                className="hidden max-w-[10rem] truncate text-sm font-medium sm:inline"
-                style={{ color: 'var(--color-accent-cream)' }}
+              <Link
+                href="/dashboard"
+                className="hidden max-w-[10rem] truncate text-sm font-medium transition-colors hover:text-white sm:inline"
+                style={{
+                  color: pathname.startsWith('/dashboard')
+                    ? 'var(--color-accent-gold)'
+                    : 'var(--color-accent-cream)',
+                }}
               >
                 {displayNameOf(user)}
-              </span>
+              </Link>
               <button
                 onClick={handleSignOut}
                 className="rounded-lg border px-4 py-1.5 text-sm font-semibold transition-colors hover:bg-white/5"
@@ -198,6 +203,22 @@ export function Header() {
               }}
             >
               Sign in
+            </Link>
+          )}
+          {user && (
+            <Link
+              href="/dashboard"
+              className="border-b py-4 text-2xl font-semibold"
+              style={{
+                fontFamily: 'var(--font-display)',
+                color: pathname.startsWith('/dashboard')
+                  ? 'var(--color-accent-gold)'
+                  : 'var(--color-accent-cream)',
+                borderColor: 'var(--color-surface-divider)',
+                animation: `hero-rise 0.35s var(--ease-out-quart) 0.18s backwards`,
+              }}
+            >
+              My Table
             </Link>
           )}
         </div>

@@ -69,7 +69,15 @@ export async function proxy(request: NextRequest) {
   // Signed-in users don't need the sign-in page.
   if (request.nextUrl.pathname === '/sign-in' && user) {
     const url = request.nextUrl.clone();
-    url.pathname = '/';
+    url.pathname = '/dashboard';
+    url.search = '';
+    return NextResponse.redirect(url);
+  }
+
+  // Signed-in users land on their table, not the marketing page.
+  if (request.nextUrl.pathname === '/' && user) {
+    const url = request.nextUrl.clone();
+    url.pathname = '/dashboard';
     return NextResponse.redirect(url);
   }
 

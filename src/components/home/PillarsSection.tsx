@@ -43,11 +43,11 @@ const PILLARS = [
     ),
   },
   {
-    title: 'Community',
+    title: 'The Pack',
     description:
       'Table talk without the table stakes. Share hands, argue rules, find opponents.',
     href: '/community',
-    cta: 'Join the discussion',
+    cta: 'Join the pack',
     icon: (
       <svg {...ICON_PROPS} viewBox="0 0 24 24" aria-hidden="true">
         {/* Speech bubbles */}

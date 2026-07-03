@@ -48,10 +48,10 @@ function memberSince(iso: string): string {
 
 const QUICK_LINKS = [
   {
-    title: 'Join the community',
+    title: 'The Pack',
     body: 'Strategy talk, rules debates and table stories.',
     href: '/community',
-    cta: 'Pull up a chair',
+    cta: 'Join the pack',
     suit: '♣',
   },
   {

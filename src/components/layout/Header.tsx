@@ -10,7 +10,7 @@ import { createClient } from '@/lib/supabase/client';
 const NAV = [
   { href: '/play', label: 'Games' },
   { href: '/news', label: 'News' },
-  { href: '/community', label: 'Community' },
+  { href: '/community', label: 'The Pack' },
 ];
 
 function displayNameOf(user: {

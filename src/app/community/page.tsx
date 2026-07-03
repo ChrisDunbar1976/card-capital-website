@@ -4,9 +4,9 @@ import { Reveal } from '@/components/motion/Reveal';
 import { SectionEyebrow } from '@/components/home/SectionEyebrow';
 
 export const metadata: Metadata = {
-  title: 'Community',
+  title: 'The Pack',
   description:
-    'The Card Capital community — strategy talk, rules debates, and table stories.',
+    'The Pack — Card Capital\'s community for strategy talk, rules debates, and table stories.',
 };
 
 const BOARDS = [
@@ -137,7 +137,7 @@ export default function CommunityPage() {
       <section className="felt-surface relative overflow-hidden">
         <div className="felt-vignette" />
         <div className="relative z-10 mx-auto max-w-6xl px-4 py-20 text-center sm:py-28">
-          <SectionEyebrow suit="♣">The Community</SectionEyebrow>
+          <SectionEyebrow suit="♣">The Pack</SectionEyebrow>
           <h1
             className="mb-4 font-semibold"
             style={{

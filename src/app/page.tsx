@@ -98,7 +98,7 @@ export default function Home() {
           />
 
           <h1
-            className="font-bold tracking-tight mb-[2vw] sm:mb-[1.625rem]"
+            className="font-bold tracking-tight mb-[calc(2vw+10px)] sm:mb-[1.625rem]"
             style={{
               fontSize: "var(--font-size-fluid-4xl)",
               lineHeight: 1.1,

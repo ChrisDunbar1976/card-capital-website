@@ -88,8 +88,8 @@ export default function Home() {
           <Image
             src="/card-capital-logo.png"
             alt="Card Capital"
-            width={450}
-            height={450}
+            width={537}
+            height={580}
             priority
             className="mx-auto mb-[3vw] sm:mb-6 w-[65vw] sm:w-80 md:w-96 lg:w-[28rem] h-auto"
           />

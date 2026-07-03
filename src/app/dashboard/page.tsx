@@ -124,6 +124,131 @@ export default async function DashboardPage() {
       <div className="mx-auto max-w-6xl px-4 py-12 sm:py-16">
         {/* Stat panels */}
         <div className="mb-12 grid grid-cols-1 gap-4 sm:grid-cols-3">
+          {/* Friend code */}
+          <div
+            className="rounded-2xl p-6"
+            style={{
+              backgroundColor: 'var(--color-bg-card)',
+              border: '1px solid var(--color-gold-hairline)',
+              boxShadow: 'var(--shadow-card)',
+            }}
+          >
+            <p
+              className="mb-1 text-xs font-semibold uppercase"
+              style={{
+                letterSpacing: '0.14em',
+                color: 'var(--color-text-muted)',
+              }}
+            >
+              Friend code
+            </p>
+            {profile?.friend_code ? (
+              <FriendCode code={profile.friend_code} />
+            ) : (
+              <p
+                className="text-sm"
+                style={{ color: 'var(--color-text-secondary)' }}
+              >
+                Open the app to generate your friend code.
+              </p>
+            )}
+            <p
+              className="mt-2 text-sm"
+              style={{ color: 'var(--color-text-secondary)' }}
+            >
+              Share it so friends can find you at the table.
+            </p>
+          </div>
+
+          {/* Games */}
+          <Link
+            href="/play"
+            className="hover-lift group rounded-2xl p-6"
+            style={{
+              backgroundColor: 'var(--color-bg-card)',
+              border: '1px solid var(--color-gold-hairline)',
+              boxShadow: 'var(--shadow-card)',
+            }}
+          >
+            <p
+              className="mb-1 text-xs font-semibold uppercase"
+              style={{
+                letterSpacing: '0.14em',
+                color: 'var(--color-text-muted)',
+              }}
+            >
+              Games
+            </p>
+            <p
+              className="text-3xl font-semibold tabular-nums"
+              style={{
+                fontFamily: 'var(--font-display)',
+                color: 'var(--color-accent-gold)',
+              }}
+            >
+              62
+              <span
+                className="ml-2 text-base font-normal"
+                style={{ color: 'var(--color-text-secondary)' }}
+              >
+                card games
+              </span>
+            </p>
+            <p
+              className="mt-2 text-sm"
+              style={{ color: 'var(--color-text-secondary)' }}
+            >
+              Browse the full library &mdash; Poker, Rummy, Solitaire and
+              more.{' '}
+              <span
+                className="font-semibold"
+                style={{ color: 'var(--color-accent-gold)' }}
+              >
+                Pick a game &rarr;
+              </span>
+            </p>
+          </Link>
+
+          {/* Friends */}
+          <div
+            className="rounded-2xl p-6"
+            style={{
+              backgroundColor: 'var(--color-bg-card)',
+              border: '1px solid var(--color-gold-hairline)',
+              boxShadow: 'var(--shadow-card)',
+            }}
+          >
+            <p
+              className="mb-1 text-xs font-semibold uppercase"
+              style={{
+                letterSpacing: '0.14em',
+                color: 'var(--color-text-muted)',
+              }}
+            >
+              Friends
+            </p>
+            <p
+              className="text-3xl font-semibold tabular-nums"
+              style={{
+                fontFamily: 'var(--font-display)',
+                color: 'var(--color-accent-gold)',
+              }}
+            >
+              {friendCount ?? 0}
+            </p>
+            <p
+              className="mt-2 text-sm"
+              style={{ color: 'var(--color-text-secondary)' }}
+            >
+              {(friendCount ?? 0) > 0
+                ? 'Regulars who know your name.'
+                : 'Invite a friend — the table plays better with company.'}
+            </p>
+          </div>
+        </div>
+
+        {/* Stats row — bankroll + online record */}
+        <div className="mb-12 grid grid-cols-1 gap-4 sm:grid-cols-2">
           {/* Bankroll */}
           <div
             className="rounded-2xl p-6"
@@ -165,7 +290,7 @@ export default async function DashboardPage() {
             </p>
           </div>
 
-          {/* Friend code */}
+          {/* Online record */}
           <div
             className="rounded-2xl p-6"
             style={{
@@ -174,111 +299,36 @@ export default async function DashboardPage() {
               boxShadow: 'var(--shadow-card)',
             }}
           >
-            <p
-              className="mb-1 text-xs font-semibold uppercase"
-              style={{
-                letterSpacing: '0.14em',
-                color: 'var(--color-text-muted)',
-              }}
-            >
-              Friend code
-            </p>
-            {profile?.friend_code ? (
-              <FriendCode code={profile.friend_code} />
-            ) : (
-              <p
-                className="text-sm"
-                style={{ color: 'var(--color-text-secondary)' }}
-              >
-                Open the app to generate your friend code.
-              </p>
-            )}
-            <p
-              className="mt-2 text-sm"
-              style={{ color: 'var(--color-text-secondary)' }}
-            >
-              Share it so friends can find you at the table.
-            </p>
-          </div>
-
-          {/* Friends */}
-          <div
-            className="rounded-2xl p-6"
-            style={{
-              backgroundColor: 'var(--color-bg-card)',
-              border: '1px solid var(--color-gold-hairline)',
-              boxShadow: 'var(--shadow-card)',
-            }}
-          >
-            <p
-              className="mb-1 text-xs font-semibold uppercase"
-              style={{
-                letterSpacing: '0.14em',
-                color: 'var(--color-text-muted)',
-              }}
-            >
-              Friends
-            </p>
-            <p
-              className="text-3xl font-semibold tabular-nums"
-              style={{
-                fontFamily: 'var(--font-display)',
-                color: 'var(--color-accent-gold)',
-              }}
-            >
-              {friendCount ?? 0}
-            </p>
-            <p
-              className="mt-2 text-sm"
-              style={{ color: 'var(--color-text-secondary)' }}
-            >
-              {(friendCount ?? 0) > 0
-                ? 'Regulars who know your name.'
-                : 'Invite a friend — the table plays better with company.'}
-            </p>
-          </div>
-        </div>
-
-        {/* Online record — honest placeholder until web stats land */}
-        <div
-          className="mb-12 rounded-2xl p-6"
-          style={{
-            backgroundColor: 'var(--color-bg-card)',
-            border: '1px solid var(--color-gold-hairline)',
-            boxShadow: 'var(--shadow-card)',
-          }}
-        >
-          <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
-            <div>
-              <h2
-                className="mb-1 font-semibold"
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p
+                  className="mb-1 text-xs font-semibold uppercase"
+                  style={{
+                    letterSpacing: '0.14em',
+                    color: 'var(--color-text-muted)',
+                  }}
+                >
+                  Online record
+                </p>
+                <p
+                  className="text-sm leading-relaxed"
+                  style={{ color: 'var(--color-text-secondary)' }}
+                >
+                  Ratings, win counts and leaderboard standing come from online
+                  multiplayer. Play a match and your record appears here.
+                </p>
+              </div>
+              <span
+                className="mt-1 shrink-0 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
                 style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: 'var(--font-size-fluid-xl)',
                   color: 'var(--color-accent-gold)',
+                  border: '1px solid var(--color-gold-hairline-bright)',
+                  backgroundColor: 'var(--color-surface-highlight)',
                 }}
               >
-                Your online record
-              </h2>
-              <p
-                className="text-sm leading-relaxed"
-                style={{ color: 'var(--color-text-secondary)' }}
-              >
-                Ratings, win counts and leaderboard standing come from online
-                multiplayer games in the app. Play a match and your record
-                appears here.
-              </p>
+                Unrated
+              </span>
             </div>
-            <span
-              className="shrink-0 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
-              style={{
-                color: 'var(--color-accent-gold)',
-                border: '1px solid var(--color-gold-hairline-bright)',
-                backgroundColor: 'var(--color-surface-highlight)',
-              }}
-            >
-              Unrated
-            </span>
           </div>
         </div>
 

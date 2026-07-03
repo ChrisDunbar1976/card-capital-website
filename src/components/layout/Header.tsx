@@ -11,20 +11,14 @@ export function Header() {
       }}
     >
       <nav className="max-w-6xl mx-auto flex items-center justify-between px-4 h-14">
-        <Link href="/" className="flex items-center gap-2.5">
+        <Link href="/" className="flex items-center">
           <Image
             src="/card-capital-logo.png"
             alt="Card Capital"
-            width={40}
-            height={40}
-            className="w-10 h-10"
+            width={50}
+            height={50}
+            className="w-[50px] h-[50px]"
           />
-          <span
-            className="text-lg font-bold tracking-tight"
-            style={{ color: 'var(--color-accent-gold)' }}
-          >
-            Card Capital
-          </span>
         </Link>
 
         <div className="flex items-center gap-6">

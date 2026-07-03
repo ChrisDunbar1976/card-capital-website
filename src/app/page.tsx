@@ -88,10 +88,10 @@ export default function Home() {
           <Image
             src="/card-capital-logo.png"
             alt="Card Capital"
-            width={160}
-            height={160}
+            width={200}
+            height={200}
             priority
-            className="mx-auto mb-6 w-32 h-32 sm:w-40 sm:h-40"
+            className="mx-auto mb-6 w-40 h-40 sm:w-[200px] sm:h-[200px]"
           />
 
           <h1
@@ -102,9 +102,7 @@ export default function Home() {
               color: "var(--color-accent-gold)",
             }}
           >
-            60 Card Games.
-            <br />
-            One Table.
+            60 Card Games: One Table.
           </h1>
 
           <p

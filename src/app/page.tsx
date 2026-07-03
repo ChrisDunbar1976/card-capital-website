@@ -119,7 +119,7 @@ export default function Home() {
             the Western Saloon.
           </p>
           <p
-            className="max-w-xl mx-auto mb-[4vw] sm:mb-8"
+            className="max-w-xl mx-auto mb-[calc(4vw+10px)] sm:mb-8"
             style={{
               fontSize: "var(--font-size-fluid-lg)",
               color: "var(--color-text-secondary)",

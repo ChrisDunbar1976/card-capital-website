@@ -4,6 +4,8 @@ export interface GameInfo {
   players: string;
   priority: number;
   gambling: boolean;
+  /** If set, the game is playable in the browser at this route. */
+  href?: string;
 }
 
 export interface GameCategory {
@@ -19,7 +21,7 @@ export const CATEGORIES: GameCategory[] = [
     name: 'Shedding',
     tagline: 'Empty your hand first',
     games: [
-      { id: 'switch', name: 'Switch', players: '2–8', priority: 5, gambling: false },
+      { id: 'switch', name: 'Switch', players: '2–8', priority: 5, gambling: false, href: '/play/switch' },
       { id: 'last-card', name: 'Last Card', players: '2–8', priority: 5, gambling: false },
       { id: 'crazy-eights', name: 'Crazy Eights', players: '2–8', priority: 5, gambling: false },
       { id: 'palace', name: 'Palace', players: '2–5', priority: 4, gambling: false },

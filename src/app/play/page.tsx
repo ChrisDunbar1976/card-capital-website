@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { CATEGORIES, TOTAL_GAMES, categorysuit } from '@/data/games';
+import { CATEGORIES, TOTAL_GAMES, categorysuit, type GameInfo } from '@/data/games';
 import { Reveal } from '@/components/motion/Reveal';
 import { SectionEyebrow } from '@/components/home/SectionEyebrow';
 
@@ -130,44 +130,7 @@ export default function PlayPage() {
                 .sort((a, b) => b.priority - a.priority)
                 .map((game, gi) => (
                   <Reveal key={game.id} delay={gi * 0.04}>
-                    <div
-                      className="hover-lift rounded-xl p-4"
-                      style={{
-                        backgroundColor: 'var(--color-bg-card)',
-                        border: '1px solid var(--color-gold-hairline)',
-                      }}
-                    >
-                      <div className="flex items-start justify-between gap-2">
-                        <div>
-                          <h3
-                            className="font-semibold leading-snug"
-                            style={{ fontFamily: 'var(--font-display)' }}
-                          >
-                            {game.name}
-                          </h3>
-                          <p
-                            className="mt-0.5 text-sm"
-                            style={{ color: 'var(--color-text-secondary)' }}
-                          >
-                            {game.players === '1'
-                              ? 'Solo'
-                              : `${game.players} players`}
-                          </p>
-                        </div>
-                        {game.gambling && (
-                          <span
-                            className="mt-0.5 shrink-0 rounded-full px-2 py-0.5 text-[11px] font-semibold"
-                            style={{
-                              color: 'var(--color-accent-amber)',
-                              backgroundColor: 'rgba(245, 166, 35, 0.12)',
-                              border: '1px solid rgba(245, 166, 35, 0.2)',
-                            }}
-                          >
-                            Chips
-                          </span>
-                        )}
-                      </div>
-                    </div>
+                    <GameTile game={game} />
                   </Reveal>
                 ))}
             </div>
@@ -214,5 +177,78 @@ export default function PlayPage() {
         </div>
       </section>
     </>
+  );
+}
+
+function GameTile({ game }: { game: GameInfo }) {
+  const subtitle = game.players === '1' ? 'Solo' : `${game.players} players`;
+
+  const inner = (
+    <>
+      <div className="flex items-start justify-between gap-2">
+        <div>
+          <h3
+            className="font-semibold leading-snug"
+            style={{ fontFamily: 'var(--font-display)' }}
+          >
+            {game.name}
+          </h3>
+          <p className="mt-0.5 text-sm" style={{ color: 'var(--color-text-secondary)' }}>
+            {subtitle}
+          </p>
+        </div>
+        {game.gambling && (
+          <span
+            className="mt-0.5 shrink-0 rounded-full px-2 py-0.5 text-[11px] font-semibold"
+            style={{
+              color: 'var(--color-accent-amber)',
+              backgroundColor: 'rgba(245, 166, 35, 0.12)',
+              border: '1px solid rgba(245, 166, 35, 0.2)',
+            }}
+          >
+            Chips
+          </span>
+        )}
+      </div>
+      {game.href && (
+        <span
+          className="mt-3 inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[11px] font-semibold"
+          style={{
+            color: 'var(--color-accent-gold)',
+            backgroundColor: 'var(--color-surface-highlight)',
+            border: '1px solid var(--color-gold-hairline-bright)',
+          }}
+        >
+          Play now →
+        </span>
+      )}
+    </>
+  );
+
+  if (game.href) {
+    return (
+      <Link
+        href={game.href}
+        className="hover-lift block rounded-xl p-4"
+        style={{
+          backgroundColor: 'var(--color-bg-card)',
+          border: '1px solid var(--color-gold-hairline-bright)',
+        }}
+      >
+        {inner}
+      </Link>
+    );
+  }
+
+  return (
+    <div
+      className="hover-lift rounded-xl p-4"
+      style={{
+        backgroundColor: 'var(--color-bg-card)',
+        border: '1px solid var(--color-gold-hairline)',
+      }}
+    >
+      {inner}
+    </div>
   );
 }

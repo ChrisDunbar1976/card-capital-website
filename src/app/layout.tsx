@@ -4,6 +4,7 @@ import { AuthProvider } from "@/components/auth/AuthProvider";
 import { MotionProvider } from "@/components/motion/MotionProvider";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { SiteChrome } from "@/components/layout/SiteChrome";
 import "./globals.css";
 
 const inter = Inter({
@@ -48,9 +49,9 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         <AuthProvider>
           <MotionProvider>
-            <Header />
-            <main className="flex-1">{children}</main>
-            <Footer />
+            <SiteChrome header={<Header />} footer={<Footer />}>
+              {children}
+            </SiteChrome>
           </MotionProvider>
         </AuthProvider>
       </body>

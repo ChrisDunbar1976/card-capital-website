@@ -87,6 +87,10 @@ html {
 
 body {
   background-color: var(--color-bg-primary);
+  background-image: url("/table-background.png");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
   color: var(--color-text-primary);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;

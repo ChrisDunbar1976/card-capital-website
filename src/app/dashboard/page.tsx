@@ -1,9 +1,17 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { SectionEyebrow } from '@/components/home/SectionEyebrow';
 import { FriendCode } from './FriendCode';
+
+const FAN_CARDS = [
+  { src: '/cards/face-king-spades.webp', alt: 'King of Spades', rot: -15, x: -60, y: 12 },
+  { src: '/cards/face-queen-hearts.webp', alt: 'Queen of Hearts', rot: -5, x: -20, y: 2 },
+  { src: '/cards/face-jack-diamonds.webp', alt: 'Jack of Diamonds', rot: 5, x: 20, y: 2 },
+  { src: '/cards/face-king-clubs.webp', alt: 'King of Clubs', rot: 15, x: 60, y: 12 },
+];
 
 export const metadata: Metadata = {
   title: 'My Table',
@@ -96,28 +104,61 @@ export default async function DashboardPage() {
       {/* Welcome band */}
       <section className="felt-surface relative overflow-hidden">
         <div className="felt-vignette" />
-        <div className="relative z-10 mx-auto max-w-6xl px-4 pb-12 pt-16 sm:pb-16 sm:pt-24">
-          <SectionEyebrow suit="♦">My Table</SectionEyebrow>
-          <h1
-            className="mb-2 font-semibold"
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 'var(--font-size-fluid-4xl)',
-              lineHeight: 1.1,
-            }}
+        <div className="relative z-10 mx-auto grid max-w-6xl items-center gap-8 px-4 pb-12 pt-16 sm:pb-16 sm:pt-24 lg:grid-cols-[1fr_auto]">
+          <div>
+            <SectionEyebrow suit="♦">My Table</SectionEyebrow>
+            <h1
+              className="mb-2 font-semibold"
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: 'var(--font-size-fluid-4xl)',
+                lineHeight: 1.1,
+              }}
+            >
+              {greeting()}, {name}.
+            </h1>
+            <p
+              style={{
+                fontSize: 'var(--font-size-fluid-base)',
+                color: 'var(--color-text-secondary)',
+              }}
+            >
+              {profile
+                ? `At the table since ${memberSince(profile.created_at)}.`
+                : 'Your seat is reserved.'}
+            </p>
+          </div>
+
+          {/* Card fan — same 4 face cards as landing hero */}
+          <div
+            className="relative hidden h-44 w-72 lg:block"
+            aria-hidden="true"
           >
-            {greeting()}, {name}.
-          </h1>
-          <p
-            style={{
-              fontSize: 'var(--font-size-fluid-base)',
-              color: 'var(--color-text-secondary)',
-            }}
-          >
-            {profile
-              ? `At the table since ${memberSince(profile.created_at)}.`
-              : 'Your seat is reserved.'}
-          </p>
+            {FAN_CARDS.map((card, i) => (
+              <div
+                key={i}
+                className="absolute left-1/2 top-1/2"
+                style={{
+                  width: 110,
+                  aspectRatio: '5 / 7',
+                  transform: `translate(calc(-50% + ${card.x}px), calc(-50% + ${card.y}px)) rotate(${card.rot}deg)`,
+                  zIndex: i,
+                }}
+              >
+                <Image
+                  src={card.src}
+                  alt={card.alt}
+                  width={400}
+                  height={534}
+                  className="h-full w-full object-cover"
+                  style={{
+                    borderRadius: 10,
+                    boxShadow: 'var(--shadow-card)',
+                  }}
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 

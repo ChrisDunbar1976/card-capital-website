@@ -85,12 +85,13 @@ export default async function DashboardPage() {
       .eq('user_id', user.id),
   ]);
 
-  const name =
+  const fullName =
     profile?.display_name ||
     (user.user_metadata?.display_name as string) ||
     (user.user_metadata?.full_name as string) ||
     user.email?.split('@')[0] ||
     'Player';
+  const firstName = fullName.split(' ')[0];
 
   return (
     <>
@@ -108,7 +109,7 @@ export default async function DashboardPage() {
                 lineHeight: 1.1,
               }}
             >
-              {greeting()}, {name}.
+              {greeting()}, {firstName}.
             </h1>
             <p
               style={{
@@ -388,7 +389,7 @@ export default async function DashboardPage() {
               className="mt-2 mb-1 font-semibold"
               style={{ fontFamily: 'var(--font-display)' }}
             >
-              {name}
+              {fullName}
             </h3>
             <p
               className="mb-1 text-sm"

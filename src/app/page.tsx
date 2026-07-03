@@ -74,7 +74,10 @@ export default function Home() {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden">
+      <section
+        className="relative overflow-hidden bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: "url('/table-background.png')" }}
+      >
         {/* Ambient glow */}
         <div
           className="absolute inset-0 pointer-events-none"
@@ -91,7 +94,7 @@ export default function Home() {
             width={537}
             height={580}
             priority
-            className="mx-auto mb-[calc(2vw+10px)] sm:mb-[2.25rem] w-[38vw] sm:w-48 md:w-56 lg:w-60 h-auto"
+            className="mx-auto mb-[calc(2vw+30px)] sm:mb-[2.25rem] w-[38vw] sm:w-48 md:w-56 lg:w-60 h-auto"
           />
 
           <h1

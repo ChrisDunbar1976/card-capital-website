@@ -88,10 +88,10 @@ export default function Home() {
           <Image
             src="/card-capital-logo.png"
             alt="Card Capital"
-            width={200}
-            height={200}
+            width={300}
+            height={300}
             priority
-            className="mx-auto mb-6 w-40 h-40 sm:w-[200px] sm:h-[200px]"
+            className="mx-auto mb-6 w-[240px] h-[240px] sm:w-[300px] sm:h-[300px]"
           />
 
           <h1
@@ -102,9 +102,19 @@ export default function Home() {
               color: "var(--color-accent-gold)",
             }}
           >
-            60 Card Games: One Table.
+            60 Card Games: One Table
           </h1>
 
+          <p
+            className="max-w-xl mx-auto mb-4"
+            style={{
+              fontSize: "var(--font-size-fluid-lg)",
+              color: "var(--color-text-secondary)",
+            }}
+          >
+            Play solo against AI opponents or challenge players worldwide at
+            the Western Saloon.
+          </p>
           <p
             className="max-w-xl mx-auto mb-8"
             style={{
@@ -112,8 +122,7 @@ export default function Home() {
               color: "var(--color-text-secondary)",
             }}
           >
-            Play solo against AI opponents or challenge players worldwide at
-            the Western Saloon. Available on web, iOS, and Android.
+            Available on web, iOS, and Android.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">

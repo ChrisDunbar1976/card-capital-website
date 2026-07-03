@@ -1,65 +1,304 @@
 import Image from "next/image";
+import Link from "next/link";
+
+const GAMES = [
+  { name: "Rummy", icon: "🃏" },
+  { name: "Poker", icon: "♠️" },
+  { name: "Blackjack", icon: "🂡" },
+  { name: "Solitaire", icon: "♦️" },
+  { name: "Hearts", icon: "♥️" },
+  { name: "Spades", icon: "♣️" },
+];
+
+const PILLARS = [
+  {
+    emoji: "🃏",
+    title: "Play",
+    description:
+      "60 card games across 9 categories. Play solo against AI opponents at the Western Saloon table, or go head-to-head with players worldwide.",
+    href: "/play",
+    cta: "Browse Games",
+  },
+  {
+    emoji: "📰",
+    title: "News",
+    description:
+      "The latest from the world of card games. Strategy guides, tournament coverage, and curated articles delivered fresh daily.",
+    href: "/news",
+    cta: "Read News",
+  },
+  {
+    emoji: "💬",
+    title: "Community",
+    description:
+      "Share strategies, discuss games, and connect with fellow card players. Your game stats and achievements on display.",
+    href: "/community",
+    cta: "Join the Discussion",
+  },
+];
+
+const FEATURES = [
+  {
+    emoji: "🤖",
+    title: "AI Opponents",
+    description: "12 unique characters with distinct play styles, from cautious Cora to daring Dutch.",
+  },
+  {
+    emoji: "🌐",
+    title: "Online Multiplayer",
+    description: "Matchmaking, game rooms, and real-time play against players across the globe.",
+  },
+  {
+    emoji: "📊",
+    title: "Leaderboards",
+    description: "Glicko-2 ranking system. Climb the tiers from Novice to Grandmaster.",
+  },
+  {
+    emoji: "🎁",
+    title: "Daily Bonus",
+    description: "Log in every day to collect coins and unlock new content.",
+  },
+  {
+    emoji: "📱",
+    title: "Cross-Platform",
+    description: "Your progress syncs between web, iOS, and Android. One account, everywhere.",
+  },
+  {
+    emoji: "🏜️",
+    title: "Western Saloon",
+    description: "Immersive table environment with ambient lighting, batwing doors, and character art.",
+  },
+];
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <>
+      {/* Hero */}
+      <section className="relative overflow-hidden">
+        {/* Ambient glow */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              "radial-gradient(ellipse 60% 50% at 50% 0%, rgba(212, 168, 75, 0.08) 0%, transparent 70%)",
+          }}
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+
+        <div className="max-w-6xl mx-auto px-4 pt-16 pb-20 sm:pt-24 sm:pb-28 text-center relative">
+          <Image
+            src="/card-capital-logo.png"
+            alt="Card Capital"
+            width={160}
+            height={160}
+            priority
+            className="mx-auto mb-6 w-32 h-32 sm:w-40 sm:h-40"
+          />
+
+          <h1
+            className="font-bold tracking-tight mb-4"
+            style={{
+              fontSize: "var(--font-size-fluid-4xl)",
+              lineHeight: 1.1,
+              color: "var(--color-accent-gold)",
+            }}
+          >
+            60 Card Games.
+            <br />
+            One Table.
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+
+          <p
+            className="max-w-xl mx-auto mb-8"
+            style={{
+              fontSize: "var(--font-size-fluid-lg)",
+              color: "var(--color-text-secondary)",
+            }}
+          >
+            Play solo against AI opponents or challenge players worldwide at
+            the Western Saloon. Available on web, iOS, and Android.
           </p>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <Link
+              href="/play"
+              className="inline-flex items-center px-6 py-3 rounded-xl font-semibold text-base transition-all hover:brightness-110 hover:scale-[1.02]"
+              style={{
+                backgroundColor: "var(--color-accent-gold)",
+                color: "var(--color-text-inverse)",
+              }}
+            >
+              Start Playing
+            </Link>
+            <Link
+              href="#features"
+              className="inline-flex items-center px-6 py-3 rounded-xl font-semibold text-base border transition-colors hover:bg-white/5"
+              style={{
+                borderColor: "var(--color-surface-divider)",
+                color: "var(--color-text-secondary)",
+              }}
+            >
+              Learn More
+            </Link>
+          </div>
+
+          {/* Game ticker */}
+          <div className="flex flex-wrap justify-center gap-3 mt-12">
+            {GAMES.map((game) => (
+              <span
+                key={game.name}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm"
+                style={{
+                  backgroundColor: "var(--color-bg-card)",
+                  border: "1px solid var(--color-surface-divider)",
+                  color: "var(--color-text-secondary)",
+                }}
+              >
+                <span>{game.icon}</span>
+                {game.name}
+              </span>
+            ))}
+            <span
+              className="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium"
+              style={{
+                backgroundColor: "var(--color-surface-highlight)",
+                color: "var(--color-accent-gold)",
+              }}
+            >
+              +54 more
+            </span>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      {/* Divider */}
+      <div
+        className="h-px max-w-4xl mx-auto"
+        style={{ backgroundColor: "var(--color-surface-divider)" }}
+      />
+
+      {/* Three Pillars */}
+      <section className="max-w-6xl mx-auto px-4 py-16 sm:py-24">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {PILLARS.map((pillar) => (
+            <Link
+              key={pillar.title}
+              href={pillar.href}
+              className="group rounded-2xl p-6 transition-all hover:scale-[1.02] hover:brightness-110"
+              style={{
+                backgroundColor: "var(--color-bg-card)",
+                border: "1px solid var(--color-surface-divider)",
+              }}
+            >
+              <span className="text-3xl mb-4 block">{pillar.emoji}</span>
+              <h2
+                className="text-xl font-bold mb-2"
+                style={{ color: "var(--color-accent-gold)" }}
+              >
+                {pillar.title}
+              </h2>
+              <p
+                className="text-sm leading-relaxed mb-4"
+                style={{ color: "var(--color-text-secondary)" }}
+              >
+                {pillar.description}
+              </p>
+              <span
+                className="text-sm font-semibold inline-flex items-center gap-1 transition-colors group-hover:brightness-110"
+                style={{ color: "var(--color-accent-gold)" }}
+              >
+                {pillar.cta}
+                <span className="transition-transform group-hover:translate-x-0.5">
+                  &rarr;
+                </span>
+              </span>
+            </Link>
+          ))}
         </div>
-      </main>
-    </div>
+      </section>
+
+      {/* Features Grid */}
+      <section
+        id="features"
+        className="py-16 sm:py-24"
+        style={{ backgroundColor: "var(--color-bg-secondary)" }}
+      >
+        <div className="max-w-6xl mx-auto px-4">
+          <h2
+            className="text-center font-bold mb-3"
+            style={{
+              fontSize: "var(--font-size-fluid-2xl)",
+              color: "var(--color-accent-gold)",
+            }}
+          >
+            Everything at the Table
+          </h2>
+          <p
+            className="text-center max-w-lg mx-auto mb-12"
+            style={{
+              fontSize: "var(--font-size-fluid-base)",
+              color: "var(--color-text-secondary)",
+            }}
+          >
+            Built for card game lovers. Whether you play for five minutes or
+            five hours.
+          </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {FEATURES.map((feature) => (
+              <div
+                key={feature.title}
+                className="rounded-xl p-5"
+                style={{
+                  backgroundColor: "var(--color-bg-card)",
+                  border: "1px solid var(--color-surface-divider)",
+                }}
+              >
+                <span className="text-2xl mb-3 block">{feature.emoji}</span>
+                <h3 className="font-semibold mb-1">{feature.title}</h3>
+                <p
+                  className="text-sm leading-relaxed"
+                  style={{ color: "var(--color-text-secondary)" }}
+                >
+                  {feature.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="max-w-6xl mx-auto px-4 py-16 sm:py-24 text-center">
+        <h2
+          className="font-bold mb-4"
+          style={{
+            fontSize: "var(--font-size-fluid-3xl)",
+            color: "var(--color-accent-gold)",
+          }}
+        >
+          Ready to Deal?
+        </h2>
+        <p
+          className="max-w-md mx-auto mb-8"
+          style={{
+            fontSize: "var(--font-size-fluid-base)",
+            color: "var(--color-text-secondary)",
+          }}
+        >
+          Create a free account and start playing. Your progress carries across
+          web, iOS, and Android.
+        </p>
+        <Link
+          href="/sign-in"
+          className="inline-flex items-center px-8 py-3.5 rounded-xl font-semibold text-base transition-all hover:brightness-110 hover:scale-[1.02]"
+          style={{
+            backgroundColor: "var(--color-accent-gold)",
+            color: "var(--color-text-inverse)",
+          }}
+        >
+          Create Free Account
+        </Link>
+      </section>
+    </>
   );
 }

@@ -1,26 +1,66 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* Western Saloon — ported from cardgame-app/src/theme/colours.ts */
+  --color-bg-primary: #0B2818;
+  --color-bg-secondary: #0E3320;
+  --color-bg-card: #143D28;
+  --color-bg-elevated: #1A4A32;
+
+  --color-felt-dark: #0B2818;
+  --color-felt-mid: #14522E;
+  --color-felt-light: #1B6B3A;
+
+  --color-accent-gold: #D4A84B;
+  --color-accent-gold-light: #E0BE6A;
+  --color-accent-amber: #F5A623;
+  --color-accent-red: #E53935;
+  --color-accent-cream: #E8D5C4;
+  --color-accent-cream-light: #F0E2D6;
+
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #B8CCBE;
+  --color-text-muted: #6B8C74;
+  --color-text-inverse: #0B2818;
+
+  --color-surface-divider: rgba(255, 255, 255, 0.1);
+  --color-surface-highlight: rgba(212, 168, 75, 0.15);
+  --color-surface-overlay: rgba(0, 0, 0, 0.5);
+
+  /* Fluid Typography */
+  --font-size-fluid-sm: clamp(0.8125rem, 0.7rem + 0.35vw, 1rem);
+  --font-size-fluid-base: clamp(0.875rem, 0.75rem + 0.4vw, 1.125rem);
+  --font-size-fluid-lg: clamp(1.0625rem, 0.9rem + 0.5vw, 1.375rem);
+  --font-size-fluid-xl: clamp(1.25rem, 1.05rem + 0.65vw, 1.75rem);
+  --font-size-fluid-2xl: clamp(1.5rem, 1.2rem + 1vw, 2.25rem);
+  --font-size-fluid-3xl: clamp(1.875rem, 1.5rem + 1.25vw, 2.75rem);
+  --font-size-fluid-4xl: clamp(2.25rem, 1.75rem + 1.75vw, 3.75rem);
+
+  /* Fluid Spacing */
+  --spacing-fluid-xs: clamp(0.25rem, 0.15rem + 0.3vw, 0.5rem);
+  --spacing-fluid-sm: clamp(0.5rem, 0.35rem + 0.5vw, 0.875rem);
+  --spacing-fluid-md: clamp(0.75rem, 0.5rem + 0.75vw, 1.25rem);
+  --spacing-fluid-lg: clamp(1rem, 0.7rem + 1vw, 1.75rem);
+  --spacing-fluid-xl: clamp(1.5rem, 1rem + 1.5vw, 2.5rem);
+  --spacing-fluid-2xl: clamp(2rem, 1.35rem + 2vw, 3.5rem);
+  --spacing-fluid-3xl: clamp(3rem, 2rem + 3vw, 5rem);
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  color-scheme: dark;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent-gold);
+  outline-offset: 2px;
 }

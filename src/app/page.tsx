@@ -84,14 +84,14 @@ export default function Home() {
           }}
         />
 
-        <div className="max-w-6xl mx-auto px-4 pt-[3svh] pb-[6svh] sm:pt-[4svh] sm:pb-[8svh] text-center relative">
+        <div className="max-w-6xl mx-auto px-4 pt-[1svh] pb-[6svh] sm:pt-[2svh] sm:pb-[8svh] text-center relative">
           <Image
             src="/card-capital-logo.png"
             alt="Card Capital"
-            width={350}
-            height={350}
+            width={450}
+            height={450}
             priority
-            className="mx-auto mb-[3vw] sm:mb-6 w-[55vw] sm:w-72 md:w-80 lg:w-[22rem] h-auto"
+            className="mx-auto mb-[3vw] sm:mb-6 w-[65vw] sm:w-80 md:w-96 lg:w-[28rem] h-auto"
           />
 
           <h1

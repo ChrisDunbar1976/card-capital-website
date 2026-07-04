@@ -10,29 +10,22 @@ export function FinalCta() {
       <div className="relative z-10 mx-auto max-w-2xl px-4 text-center">
         {/* Static fan of card backs — bookends the hero */}
         <div
-          className="relative mx-auto mb-8 h-24 w-64"
+          className="relative mx-auto mb-10 h-32 w-72"
           aria-hidden="true"
         >
           {FAN.map((rot, i) => (
             <div
               key={i}
-              className="absolute left-1/2 top-0"
+              className="absolute left-1/2 top-1"
               style={{
                 transform: `translateX(-50%) rotate(${rot}deg)`,
-                transformOrigin: '50% 130%',
+                transformOrigin: '50% 125%',
+                filter: 'drop-shadow(0 8px 14px rgba(0, 0, 0, 0.45))',
               }}
             >
-              <PlayingCard faceDown width={72} />
+              <PlayingCard faceDown width={76} />
             </div>
           ))}
-          {/* Fade the fan bottoms into the felt */}
-          <div
-            className="absolute inset-x-0 -bottom-2 h-16"
-            style={{
-              background:
-                'linear-gradient(to top, var(--color-bg-primary), transparent)',
-            }}
-          />
         </div>
 
         <Reveal>

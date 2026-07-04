@@ -22,7 +22,7 @@ export function Hero() {
         }}
       />
 
-      <div className="relative z-10 mx-auto flex min-h-[92svh] max-w-3xl flex-col items-center px-4 pb-16 pt-[14vh] text-center">
+      <div className="relative z-10 mx-auto flex min-h-[92svh] max-w-3xl flex-col items-center px-4 pb-16 pt-[calc(14vh_-_10px)] text-center">
         <Image
           src="/card-capital-logo-white.png"
           alt="Card Capital"

@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { PlayingCard } from '@/components/cards/PlayingCard';
 import {
   type Card,
@@ -26,6 +27,11 @@ const SUIT_COLOR: Record<Suit, string> = {
 };
 const SUIT_ORDER: Record<Suit, number> = { hearts: 0, diamonds: 1, clubs: 2, spades: 3 };
 
+const CHARACTER_IDS = new Set([
+  'belle', 'dutch', 'ruby', 'cole', 'etta', 'reginald', 'cora',
+  'carmen', 'clyde', 'mateo', 'lenny', 'sam',
+]);
+
 const cardKey = (c: Card) => `${c.rank}-${c.suit}`;
 
 function sortCards(cards: Card[]): Card[] {
@@ -42,13 +48,13 @@ const DIFFICULTIES: { value: AIDifficulty; label: string }[] = [
 ];
 
 export function SwitchGame() {
-  const g = useSwitchGame({ opponents: 2, difficulty: 'medium' });
+  const g = useSwitchGame({ opponents: 1, difficulty: 'medium' });
   const { game, view, validPlays, isMyTurn, status } = g;
 
   const [selected, setSelected] = useState<Card[]>([]);
   const [suitPicker, setSuitPicker] = useState<Card[] | null>(null);
   const [showSetup, setShowSetup] = useState(false);
-  const [draftOpponents, setDraftOpponents] = useState(2);
+  const [draftOpponents, setDraftOpponents] = useState(1);
   const [draftDifficulty, setDraftDifficulty] = useState<AIDifficulty>('medium');
 
   // The game is dealt with Math.random(), so it must render client-only to
@@ -78,13 +84,13 @@ export function SwitchGame() {
 
   if (!mounted) {
     return (
-      <div className="felt-surface relative min-h-[100svh]">
-        <div className="felt-vignette" />
-        <div className="relative z-10 flex min-h-[100svh] items-center justify-center">
-          <span className="text-sm" style={{ color: 'var(--color-text-muted)' }}>
-            Dealing…
-          </span>
-        </div>
+      <div
+        className="relative flex min-h-[100svh] items-center justify-center"
+        style={{ background: 'radial-gradient(ellipse at 50% 22%, #1c110a 0%, #090604 100%)' }}
+      >
+        <span className="text-sm" style={{ color: 'var(--color-accent-cream)' }}>
+          Dealing…
+        </span>
       </div>
     );
   }
@@ -144,6 +150,12 @@ export function SwitchGame() {
     view.players.find((p) => p.userId === view.currentPlayerId)?.displayName ?? '';
   const myHand = sortCards(view.myHand);
 
+  // 1v1 gets a single large "seated across the felt" figure like the app.
+  const heroOpponent = opponents.length === 1 ? opponents[0]! : null;
+  const heroId = heroOpponent ? heroOpponent.displayName.toLowerCase() : '';
+  const heroSrc =
+    heroOpponent && CHARACTER_IDS.has(heroId) ? `/characters/saloon-${heroId}.webp` : null;
+
   const drawLabel = (() => {
     if (game.pendingDrawCount > 0) return `Pick up ${game.pendingDrawCount}`;
     if (game.pendingSkipTurns > 0 && game.skipTargetId === HUMAN_ID) return 'Take the skip';
@@ -167,226 +179,313 @@ export function SwitchGame() {
   })();
 
   const top = view.discardPileTop;
+  const cream = 'var(--color-accent-cream)';
 
   return (
-    <div className="felt-surface relative min-h-[100svh]">
-      <div className="felt-vignette" />
-      <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-3xl flex-col px-4 pb-6 pt-4">
-        {/* Header */}
-        <div className="mb-3 flex items-center justify-between">
-          <Link
-            href="/play"
-            className="text-sm transition-colors hover:text-white"
-            style={{ color: 'var(--color-text-secondary)' }}
-          >
-            ‹ Games
-          </Link>
-          <h1
-            className="font-semibold"
-            style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--font-size-fluid-lg)' }}
-          >
-            Switch
-          </h1>
-          <button
-            onClick={() => {
-              setDraftOpponents(g.options.opponents);
-              setDraftDifficulty(g.options.difficulty);
-              setShowSetup(true);
-            }}
-            className="rounded-full px-3 py-1 text-sm transition-colors hover:text-white"
-            style={{
-              color: 'var(--color-text-secondary)',
-              border: '1px solid var(--color-gold-hairline)',
-            }}
-          >
-            New game
-          </button>
-        </div>
+    <div
+      className="relative min-h-[100svh] w-full overflow-hidden"
+      style={{ background: 'radial-gradient(ellipse at 50% 22%, #1c110a 0%, #090604 100%)' }}
+    >
+      {/* Portrait saloon table board */}
+      <div className="relative mx-auto flex min-h-[100svh] w-full max-w-[460px] flex-col overflow-hidden">
+        <Image
+          src="/saloon-scene-felt-bg.png"
+          alt=""
+          fill
+          priority
+          sizes="480px"
+          className="object-cover"
+        />
+        {/* Top darkening for header legibility */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 z-10 h-28"
+          style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0.6), transparent)' }}
+        />
 
-        {/* Opponents */}
-        <div className="mb-2 flex flex-wrap items-end justify-center gap-4 sm:gap-8">
-          {opponents.map((p) => (
-            <OpponentFigure
-              key={p.userId}
-              name={p.displayName}
-              cardCount={p.cardCount}
-              isCurrentTurn={p.isCurrentTurn}
-            />
-          ))}
-        </div>
-
-        {/* Table */}
-        <div className="flex flex-1 flex-col items-center justify-center gap-4 py-2">
-          <div className="flex items-center justify-center gap-6">
-            {/* Draw pile */}
-            <div className="flex flex-col items-center gap-1.5">
-              <button
-                onClick={() => isMyTurn && g.draw()}
-                disabled={!isMyTurn}
-                aria-label="Draw pile"
-                className="relative transition-transform disabled:cursor-default"
-                style={{ cursor: isMyTurn ? 'pointer' : 'default' }}
-              >
-                <PlayingCard faceDown width={76} />
-                {isMyTurn && (
-                  <span
-                    className="absolute inset-0 rounded-[7px]"
-                    style={{ boxShadow: '0 0 0 2px var(--color-accent-gold)' }}
-                  />
-                )}
-              </button>
-              <span className="text-[11px]" style={{ color: 'var(--color-text-muted)' }}>
-                Draw · {view.drawPileCount}
-              </span>
-            </div>
-
-            {/* Discard pile */}
-            <div className="flex flex-col items-center gap-1.5">
-              {top ? (
-                <PlayingCard rank={top.rank} suit={top.suit} width={76} />
-              ) : (
-                <PlayingCard faceDown width={76} />
-              )}
-              <span className="text-[11px]" style={{ color: 'var(--color-text-muted)' }}>
-                Discard
-              </span>
-            </div>
-
-            {/* Declared suit */}
-            {view.declaredSuit && (
-              <div className="flex flex-col items-center gap-1">
-                <div
-                  className="flex h-11 w-11 items-center justify-center rounded-full text-2xl"
-                  style={{
-                    backgroundColor: '#FFFFFE',
-                    color: SUIT_COLOR[view.declaredSuit],
-                    border: '1px solid var(--color-gold-hairline-bright)',
-                  }}
-                >
-                  {SUIT_GLYPH[view.declaredSuit]}
-                </div>
-                <span className="text-[11px]" style={{ color: 'var(--color-text-muted)' }}>
-                  Called
-                </span>
-              </div>
-            )}
-          </div>
-
-          {/* Turn / banner */}
-          <div className="flex min-h-[2.5rem] flex-col items-center gap-1 text-center">
-            <span
-              className="text-sm font-semibold"
-              style={{ color: isMyTurn ? 'var(--color-accent-gold)' : 'var(--color-text-secondary)' }}
+        {/* Content */}
+        <div className="relative z-10 flex min-h-[100svh] flex-col">
+          {/* Header */}
+          <div className="flex items-center justify-between px-4 pt-3">
+            <Link
+              href="/play"
+              className="text-sm transition-opacity hover:opacity-75"
+              style={{ color: cream }}
             >
-              {status === 'playing'
-                ? isMyTurn
-                  ? 'Your turn'
-                  : `${currentName} is thinking…`
-                : status === 'won'
-                  ? 'You win!'
-                  : `${currentName || 'Opponent'} wins`}
-            </span>
-            {banner && (
-              <span className="text-xs" style={{ color: 'var(--color-text-secondary)' }}>
-                {banner}
-              </span>
-            )}
-          </div>
-        </div>
-
-        {/* Your hand */}
-        <div className="mt-2">
-          <div className="mb-2 flex items-center justify-between">
-            <span className="text-sm font-semibold">
-              Your hand
-              <span className="ml-1.5" style={{ color: 'var(--color-text-muted)' }}>
-                ({me?.cardCount ?? myHand.length})
-              </span>
-            </span>
-          </div>
-          <div className="flex flex-wrap justify-center gap-1.5 sm:gap-2">
-            {myHand.map((card) => {
-              const key = cardKey(card);
-              const isSelected = selectedKeys.has(key);
-              // Mirror handleCardClick: a card is clickable iff clicking it does
-              // something — it's selected (to deselect), extends the current
-              // selection, or can start a fresh play.
-              const playableNow =
-                isMyTurn &&
-                (isSelected ||
-                  (selected.length > 0 && canAdd(card)) ||
-                  startableKeys.has(key));
-              // Positive highlight on cards you CAN play; every card stays fully
-              // opaque so none look like a different card back.
-              const boxShadow = isSelected
-                ? '0 0 0 2px var(--color-accent-gold), 0 8px 18px rgba(0,0,0,0.5)'
-                : playableNow
-                  ? '0 0 0 2px var(--color-accent-gold-light), 0 0 12px rgba(212,168,75,0.45)'
-                  : 'none';
-              return (
-                <button
-                  key={key}
-                  onClick={() => handleCardClick(card)}
-                  disabled={!isMyTurn}
-                  className="transition-transform"
-                  style={{
-                    transform: isSelected
-                      ? 'translateY(-14px)'
-                      : playableNow
-                        ? 'translateY(-6px)'
-                        : 'none',
-                    cursor: isMyTurn && playableNow ? 'pointer' : 'default',
-                    borderRadius: 8,
-                    boxShadow,
-                  }}
-                >
-                  <PlayingCard rank={card.rank} suit={card.suit} width={62} />
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Controls */}
-          <div className="mt-4 flex items-center justify-center gap-3">
-            <button
-              onClick={() => setSelected([])}
-              disabled={selected.length === 0}
-              className="rounded-full px-5 py-2.5 text-sm font-semibold transition-colors disabled:opacity-40"
-              style={{ color: 'var(--color-text-secondary)', border: '1px solid var(--color-gold-hairline)' }}
+              ‹ Games
+            </Link>
+            <h1
+              className="font-semibold"
+              style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--font-size-fluid-lg)', color: cream }}
             >
-              Clear
-            </button>
+              Switch
+            </h1>
             <button
-              onClick={handlePlay}
-              disabled={!matchingPlay}
-              className="rounded-full px-8 py-2.5 text-sm font-semibold transition-transform enabled:hover:scale-105 disabled:opacity-40"
-              style={{ background: 'var(--gradient-gold)', color: 'var(--color-text-inverse)' }}
-            >
-              Play{selected.length > 1 ? ` ${selected.length}` : ''}
-            </button>
-            <button
-              onClick={() => g.draw()}
-              disabled={!isMyTurn}
-              className="rounded-full px-5 py-2.5 text-sm font-semibold transition-colors disabled:opacity-40"
+              onClick={() => {
+                setDraftOpponents(g.options.opponents);
+                setDraftDifficulty(g.options.difficulty);
+                setShowSetup(true);
+              }}
+              className="rounded-full px-3 py-1 text-sm transition-opacity hover:opacity-75"
               style={{
-                color: 'var(--color-accent-gold)',
+                color: cream,
                 border: '1px solid var(--color-gold-hairline-bright)',
+                backgroundColor: 'rgba(0,0,0,0.28)',
               }}
             >
-              {drawLabel}
+              New game
             </button>
+          </div>
+
+          {/* Opponents */}
+          {heroOpponent ? (
+            <div className="flex flex-col items-center pt-2">
+              <div
+                className="flex items-center gap-2 rounded-full px-3 py-1"
+                style={{
+                  backgroundColor: 'rgba(0,0,0,0.4)',
+                  border: `1px solid ${heroOpponent.isCurrentTurn ? 'var(--color-accent-gold)' : 'var(--color-gold-hairline)'}`,
+                }}
+              >
+                <span
+                  className="text-sm font-semibold"
+                  style={{ fontFamily: 'var(--font-display)', color: cream }}
+                >
+                  {heroOpponent.displayName}
+                </span>
+                <span className="text-xs tabular-nums" style={{ color: 'var(--color-text-secondary)' }}>
+                  {heroOpponent.cardCount} cards
+                </span>
+              </div>
+              <div className="relative flex items-end justify-center" style={{ height: '32svh' }}>
+                {heroOpponent.isCurrentTurn && (
+                  <div
+                    aria-hidden
+                    className="absolute bottom-4 left-1/2 -translate-x-1/2"
+                    style={{
+                      width: 220,
+                      height: 220,
+                      background:
+                        'radial-gradient(circle at 50% 55%, rgba(212,168,75,0.30) 0%, transparent 62%)',
+                    }}
+                  />
+                )}
+                {heroSrc && (
+                  <Image
+                    src={heroSrc}
+                    alt={heroOpponent.displayName}
+                    width={360}
+                    height={540}
+                    priority
+                    className="relative h-full w-auto object-contain object-bottom"
+                    style={{
+                      filter: heroOpponent.isCurrentTurn
+                        ? 'drop-shadow(0 6px 14px rgba(0,0,0,0.55))'
+                        : 'brightness(0.9)',
+                    }}
+                  />
+                )}
+              </div>
+            </div>
+          ) : (
+            <div className="flex flex-wrap items-end justify-center gap-3 px-2 pt-2 sm:gap-5">
+              {opponents.map((p) => (
+                <OpponentFigure
+                  key={p.userId}
+                  name={p.displayName}
+                  cardCount={p.cardCount}
+                  isCurrentTurn={p.isCurrentTurn}
+                />
+              ))}
+            </div>
+          )}
+
+          {/* Felt play area */}
+          <div className="relative flex flex-1 flex-col items-center justify-center gap-3 px-4">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/chip-stack-left.webp"
+              alt=""
+              aria-hidden
+              className="pointer-events-none absolute select-none"
+              style={{ left: 6, top: '6%', width: 72, opacity: 0.9 }}
+            />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/chip-stack-right.webp"
+              alt=""
+              aria-hidden
+              className="pointer-events-none absolute select-none"
+              style={{ right: 4, bottom: '8%', width: 80, opacity: 0.9 }}
+            />
+
+            {/* Piles */}
+            <div className="relative flex items-center justify-center gap-6">
+              <div className="flex flex-col items-center gap-1.5">
+                <button
+                  onClick={() => isMyTurn && g.draw()}
+                  disabled={!isMyTurn}
+                  aria-label="Draw pile"
+                  className="relative transition-transform disabled:cursor-default"
+                  style={{ cursor: isMyTurn ? 'pointer' : 'default' }}
+                >
+                  <PlayingCard faceDown width={80} />
+                  {isMyTurn && (
+                    <span
+                      className="absolute inset-0 rounded-[7px]"
+                      style={{ boxShadow: '0 0 0 2px var(--color-accent-gold)' }}
+                    />
+                  )}
+                </button>
+                <span className="text-[11px]" style={{ color: cream }}>
+                  Draw · {view.drawPileCount}
+                </span>
+              </div>
+
+              <div className="flex flex-col items-center gap-1.5">
+                {top ? (
+                  <PlayingCard rank={top.rank} suit={top.suit} width={80} />
+                ) : (
+                  <PlayingCard faceDown width={80} />
+                )}
+                <span className="text-[11px]" style={{ color: cream }}>
+                  Discard
+                </span>
+              </div>
+
+              {view.declaredSuit && (
+                <div className="flex flex-col items-center gap-1">
+                  <div
+                    className="flex h-11 w-11 items-center justify-center rounded-full text-2xl"
+                    style={{
+                      backgroundColor: '#FFFFFE',
+                      color: SUIT_COLOR[view.declaredSuit],
+                      border: '1px solid var(--color-gold-hairline-bright)',
+                    }}
+                  >
+                    {SUIT_GLYPH[view.declaredSuit]}
+                  </div>
+                  <span className="text-[11px]" style={{ color: cream }}>
+                    Called
+                  </span>
+                </div>
+              )}
+            </div>
+
+            {/* Turn / banner */}
+            <div className="relative flex min-h-[2.75rem] flex-col items-center gap-1 text-center">
+              <span
+                className="text-base font-semibold"
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  color: isMyTurn ? 'var(--color-accent-gold)' : cream,
+                  textShadow: '0 1px 3px rgba(0,0,0,0.6)',
+                }}
+              >
+                {status === 'playing'
+                  ? isMyTurn
+                    ? 'Your turn'
+                    : `${currentName} is thinking…`
+                  : status === 'won'
+                    ? 'You win!'
+                    : `${currentName || 'Opponent'} wins`}
+              </span>
+              {banner && (
+                <span
+                  className="text-xs"
+                  style={{ color: cream, textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}
+                >
+                  {banner}
+                </span>
+              )}
+            </div>
+          </div>
+
+          {/* Your hand + controls */}
+          <div
+            className="px-3 pb-4 pt-3"
+            style={{ background: 'linear-gradient(0deg, rgba(0,0,0,0.5) 35%, transparent)' }}
+          >
+            <div className="mb-3 flex flex-wrap justify-center gap-1.5 sm:gap-2">
+              {myHand.map((card) => {
+                const key = cardKey(card);
+                const isSelected = selectedKeys.has(key);
+                // Mirror handleCardClick: a card is clickable iff clicking it does
+                // something — it's selected (to deselect), extends the current
+                // selection, or can start a fresh play.
+                const playableNow =
+                  isMyTurn &&
+                  (isSelected ||
+                    (selected.length > 0 && canAdd(card)) ||
+                    startableKeys.has(key));
+                // Positive highlight on cards you CAN play; every card stays fully
+                // opaque so none look like a different card back.
+                const boxShadow = isSelected
+                  ? '0 0 0 2px var(--color-accent-gold), 0 8px 18px rgba(0,0,0,0.5)'
+                  : playableNow
+                    ? '0 0 0 2px var(--color-accent-gold-light), 0 0 12px rgba(212,168,75,0.45)'
+                    : 'none';
+                return (
+                  <button
+                    key={key}
+                    onClick={() => handleCardClick(card)}
+                    disabled={!isMyTurn}
+                    className="transition-transform"
+                    style={{
+                      transform: isSelected
+                        ? 'translateY(-14px)'
+                        : playableNow
+                          ? 'translateY(-6px)'
+                          : 'none',
+                      cursor: isMyTurn && playableNow ? 'pointer' : 'default',
+                      borderRadius: 8,
+                      boxShadow,
+                    }}
+                  >
+                    <PlayingCard rank={card.rank} suit={card.suit} width={56} />
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="flex items-center justify-center gap-3">
+              <button
+                onClick={() => setSelected([])}
+                disabled={selected.length === 0}
+                className="rounded-full px-5 py-2.5 text-sm font-semibold transition-colors disabled:opacity-40"
+                style={{ color: cream, border: '1px solid var(--color-gold-hairline-bright)' }}
+              >
+                Clear
+              </button>
+              <button
+                onClick={handlePlay}
+                disabled={!matchingPlay}
+                className="rounded-full px-8 py-2.5 text-sm font-semibold transition-transform enabled:hover:scale-105 disabled:opacity-40"
+                style={{ background: 'var(--gradient-gold)', color: 'var(--color-text-inverse)' }}
+              >
+                Play{selected.length > 1 ? ` ${selected.length}` : ''}
+              </button>
+              <button
+                onClick={() => g.draw()}
+                disabled={!isMyTurn}
+                className="rounded-full px-5 py-2.5 text-sm font-semibold transition-colors disabled:opacity-40"
+                style={{ color: 'var(--color-accent-gold)', border: '1px solid var(--color-gold-hairline-bright)' }}
+              >
+                {drawLabel}
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* Activity log */}
-        <details className="mt-4">
-          <summary
-            className="cursor-pointer text-xs"
-            style={{ color: 'var(--color-text-muted)' }}
-          >
-            Game log
+        {/* Game log (floating, collapsed) */}
+        <details className="absolute left-2 top-14 z-20 w-40">
+          <summary className="cursor-pointer text-xs" style={{ color: cream }}>
+            Log
           </summary>
-          <div className="mt-2 max-h-32 overflow-y-auto text-xs" style={{ color: 'var(--color-text-secondary)' }}>
+          <div
+            className="mt-1 max-h-48 overflow-y-auto rounded-lg p-2 text-xs"
+            style={{ backgroundColor: 'rgba(0,0,0,0.6)', color: 'var(--color-text-secondary)' }}
+          >
             {g.log.length === 0 ? (
               <p style={{ color: 'var(--color-text-muted)' }}>Play a card to begin.</p>
             ) : (

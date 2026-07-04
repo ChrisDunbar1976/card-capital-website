@@ -29,24 +29,8 @@ export function Hero() {
           width={360}
           height={388}
           priority
-          className="hero-enter-logo mx-auto mb-8 h-auto w-28 sm:w-36"
+          className="hero-enter-logo mx-auto mb-8 mt-[26vh] h-auto w-28 sm:mt-[24vh] sm:w-36"
         />
-
-        <h1
-          className="mb-6 font-semibold tracking-tight"
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "var(--font-size-fluid-5xl)",
-            lineHeight: 1.05,
-          }}
-        >
-          <span className="hero-enter-h1a text-gradient-gold block">
-            60 Card Games.
-          </span>
-          <span className="hero-enter-h1b text-gradient-gold block">
-            One Table.
-          </span>
-        </h1>
 
         <p
           className="hero-enter-sub mx-auto mb-9 max-w-xl"

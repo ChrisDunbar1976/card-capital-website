@@ -25,20 +25,18 @@ interface DealCard {
   alt: string;
 }
 
-// Final fan positions (px offsets from fan centre). Last card stays
-// face-down — the "56 more" mystery.
+// Final fan positions (px offsets from fan centre). Face cards only,
+// balanced symmetrically about the centre.
 const CARDS_DESKTOP: DealCard[] = [
-  { rot: -22, x: -196, y: 30, face: '/cards/face-king-spades.webp', alt: 'King of Spades' },
-  { rot: -11, x: -98, y: 8, face: '/cards/face-queen-hearts.webp', alt: 'Queen of Hearts' },
-  { rot: 0, x: 0, y: 0, face: '/cards/face-jack-diamonds.webp', alt: 'Jack of Diamonds' },
-  { rot: 11, x: 98, y: 8, face: '/cards/face-king-clubs.webp', alt: 'King of Clubs' },
-  { rot: 22, x: 196, y: 30, face: null, alt: '' },
+  { rot: -21, x: -150, y: 26, face: '/cards/face-king-spades.webp', alt: 'King of Spades' },
+  { rot: -7, x: -50, y: 4, face: '/cards/face-queen-hearts.webp', alt: 'Queen of Hearts' },
+  { rot: 7, x: 50, y: 4, face: '/cards/face-jack-diamonds.webp', alt: 'Jack of Diamonds' },
+  { rot: 21, x: 150, y: 26, face: '/cards/face-king-clubs.webp', alt: 'King of Clubs' },
 ];
 
 const CARDS_MOBILE: DealCard[] = [
-  { rot: -14, x: -88, y: 10, face: '/cards/face-queen-hearts.webp', alt: 'Queen of Hearts' },
-  { rot: 0, x: 0, y: 0, face: '/cards/face-king-spades.webp', alt: 'King of Spades' },
-  { rot: 14, x: 88, y: 10, face: null, alt: '' },
+  { rot: -10, x: -52, y: 6, face: '/cards/face-queen-hearts.webp', alt: 'Queen of Hearts' },
+  { rot: 10, x: 52, y: 6, face: '/cards/face-king-spades.webp', alt: 'King of Spades' },
 ];
 
 const PLAYED_KEY = 'ccHeroPlayed';

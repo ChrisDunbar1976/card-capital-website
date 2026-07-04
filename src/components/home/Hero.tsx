@@ -22,15 +22,18 @@ export function Hero() {
         }}
       />
 
-      <div className="relative z-10 mx-auto max-w-3xl px-4 pb-24 pt-28 text-center sm:pt-32">
+      <div className="relative z-10 mx-auto flex min-h-[92svh] max-w-3xl flex-col items-center px-4 pb-16 pt-[14vh] text-center">
         <Image
           src="/card-capital-logo-white.png"
           alt="Card Capital"
           width={360}
           height={388}
           priority
-          className="hero-enter-logo mx-auto mb-8 mt-[26vh] h-auto w-28 sm:mt-[24vh] sm:w-36"
+          className="hero-enter-logo mx-auto h-auto w-28 sm:w-36"
         />
+
+        {/* Reserved space for the animated card fan (rendered behind) */}
+        <div aria-hidden className="h-[32vh] sm:h-[34vh]" />
 
         <p
           className="hero-enter-sub mx-auto mb-9 max-w-xl"

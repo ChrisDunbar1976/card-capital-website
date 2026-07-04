@@ -162,7 +162,7 @@ export default function HeroSetPiece() {
       {/* Card fan — behind the headline block. Outer layer owns parallax,
           inner .deal-N elements are owned by the useAnimate timeline. */}
       <m.div
-        className="absolute left-1/2 top-[6%] sm:top-[8%]"
+        className="absolute left-1/2 top-[calc(14vh_+_140px)] sm:top-[calc(14vh_+_180px)]"
         style={{ x: mx, y: my }}
       >
         {cards.map((c, i) => (

@@ -22,7 +22,7 @@ export function Hero() {
         }}
       />
 
-      <div className="relative z-10 mx-auto flex min-h-[92svh] max-w-3xl flex-col items-center px-4 pb-16 pt-[calc(14vh_-_50px)] text-center">
+      <div className="relative z-10 mx-auto flex min-h-[92svh] max-w-3xl flex-col items-center px-4 pb-16 pt-7 text-center">
         <Image
           src="/card-capital-logo-white.png"
           alt="Card Capital"
@@ -33,7 +33,7 @@ export function Hero() {
         />
 
         {/* Reserved space for the animated card fan (rendered behind) */}
-        <div aria-hidden className="h-[calc(32vh_+_40px)] sm:h-[calc(34vh_+_40px)]" />
+        <div aria-hidden className="h-[210px] sm:h-[288px]" />
 
         <p
           className="hero-enter-sub mx-auto mb-9 max-w-xl"

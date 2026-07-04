@@ -182,12 +182,25 @@ export function SwitchGame() {
   const cream = 'var(--color-accent-cream)';
 
   return (
-    <div
-      className="relative min-h-[100svh] w-full overflow-hidden"
-      style={{ background: 'radial-gradient(ellipse at 50% 22%, #1c110a 0%, #090604 100%)' }}
-    >
+    <div className="relative min-h-[100svh] w-full overflow-hidden" style={{ backgroundColor: '#0B2818' }}>
+      {/* Felt fills the whole screen so wide viewports don't show dark gutters */}
+      <div
+        aria-hidden
+        className="absolute inset-0"
+        style={{
+          backgroundImage: 'url(/table-background.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      />
+      <div
+        aria-hidden
+        className="absolute inset-0"
+        style={{ background: 'radial-gradient(ellipse at 50% 38%, transparent 34%, rgba(0,0,0,0.6) 100%)' }}
+      />
+
       {/* Portrait saloon table board */}
-      <div className="relative mx-auto flex min-h-[100svh] w-full max-w-[460px] flex-col overflow-hidden">
+      <div className="relative mx-auto flex min-h-[100svh] w-full max-w-[460px] flex-col overflow-hidden shadow-2xl">
         <Image
           src="/saloon-scene-felt-bg.png"
           alt=""
@@ -195,6 +208,17 @@ export function SwitchGame() {
           priority
           sizes="480px"
           className="object-cover"
+        />
+        {/* Feather the board's left/right edges into the felt surround */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-y-0 left-0 z-10 w-8"
+          style={{ background: 'linear-gradient(90deg, rgba(11,40,24,0.9), transparent)' }}
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-y-0 right-0 z-10 w-8"
+          style={{ background: 'linear-gradient(270deg, rgba(11,40,24,0.9), transparent)' }}
         />
         {/* Top darkening for header legibility */}
         <div

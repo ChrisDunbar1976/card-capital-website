@@ -10,6 +10,7 @@ import {
   rankValue,
 } from '@/lib/game-engine';
 import { useSwitchGame, HUMAN_ID } from './useSwitchGame';
+import { OpponentFigure } from './OpponentFigure';
 
 const SUIT_GLYPH: Record<Suit, string> = {
   spades: '♠',
@@ -203,25 +204,14 @@ export function SwitchGame() {
         </div>
 
         {/* Opponents */}
-        <div className="mb-4 flex flex-wrap justify-center gap-2">
+        <div className="mb-2 flex flex-wrap items-end justify-center gap-4 sm:gap-8">
           {opponents.map((p) => (
-            <div
+            <OpponentFigure
               key={p.userId}
-              className="flex items-center gap-2 rounded-xl px-3 py-2 transition-all"
-              style={{
-                backgroundColor: 'var(--color-bg-card)',
-                border: `1px solid ${p.isCurrentTurn ? 'var(--color-accent-gold)' : 'var(--color-gold-hairline)'}`,
-                boxShadow: p.isCurrentTurn ? '0 0 0 1px var(--color-accent-gold)' : 'none',
-              }}
-            >
-              <MiniStack count={p.cardCount} />
-              <div className="leading-tight">
-                <div className="text-sm font-semibold">{p.displayName}</div>
-                <div className="text-[11px]" style={{ color: 'var(--color-text-muted)' }}>
-                  {p.cardCount} card{p.cardCount === 1 ? '' : 's'}
-                </div>
-              </div>
-            </div>
+              name={p.displayName}
+              cardCount={p.cardCount}
+              isCurrentTurn={p.isCurrentTurn}
+            />
           ))}
         </div>
 
@@ -326,19 +316,28 @@ export function SwitchGame() {
                 (isSelected ||
                   (selected.length > 0 && canAdd(card)) ||
                   startableKeys.has(key));
-              const dimmed = isMyTurn && !playableNow;
+              // Positive highlight on cards you CAN play; every card stays fully
+              // opaque so none look like a different card back.
+              const boxShadow = isSelected
+                ? '0 0 0 2px var(--color-accent-gold), 0 8px 18px rgba(0,0,0,0.5)'
+                : playableNow
+                  ? '0 0 0 2px var(--color-accent-gold-light), 0 0 12px rgba(212,168,75,0.45)'
+                  : 'none';
               return (
                 <button
-                  key={cardKey(card)}
+                  key={key}
                   onClick={() => handleCardClick(card)}
                   disabled={!isMyTurn}
                   className="transition-transform"
                   style={{
-                    transform: isSelected ? 'translateY(-14px)' : 'none',
-                    opacity: dimmed ? 0.4 : 1,
+                    transform: isSelected
+                      ? 'translateY(-14px)'
+                      : playableNow
+                        ? 'translateY(-6px)'
+                        : 'none',
                     cursor: isMyTurn && playableNow ? 'pointer' : 'default',
                     borderRadius: 8,
-                    boxShadow: isSelected ? '0 0 0 2px var(--color-accent-gold)' : 'none',
+                    boxShadow,
                   }}
                 >
                   <PlayingCard rank={card.rank} suit={card.suit} width={62} />
@@ -515,19 +514,6 @@ export function SwitchGame() {
           </div>
         </Overlay>
       )}
-    </div>
-  );
-}
-
-function MiniStack({ count }: { count: number }) {
-  const shown = Math.min(count, 4);
-  return (
-    <div className="relative" style={{ width: 22 + shown * 3, height: 30 }}>
-      {Array.from({ length: Math.max(1, shown) }).map((_, i) => (
-        <div key={i} className="absolute top-0" style={{ left: i * 3 }}>
-          <PlayingCard faceDown width={20} />
-        </div>
-      ))}
     </div>
   );
 }

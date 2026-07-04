@@ -7,6 +7,8 @@ import {
   type SwitchState,
   type SwitchEvent,
   type AIDifficulty,
+  type AIPersonality,
+  PERSONALITIES,
   createSwitchGame,
   executeAction,
   getValidPlays,
@@ -25,7 +27,33 @@ const SUIT_GLYPH: Record<Suit, string> = {
   clubs: '♣',
 };
 
-const AI_NAMES = ['Belle', 'Dutch', 'Ruby', 'Cole', 'Etta', 'Reginald', 'Cora'];
+/** A fresh, random cast of distinct regulars for this game. */
+function pickRegulars(count: number): AIPersonality[] {
+  const shuffled = [...PERSONALITIES];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j]!, shuffled[i]!];
+  }
+  return shuffled.slice(0, Math.min(count, shuffled.length));
+}
+
+interface GameSetup {
+  configs: { id: string; name: string; isAI: boolean }[];
+  personaById: Record<string, AIPersonality>;
+}
+
+function buildSetup(opts: SwitchGameOptions): GameSetup {
+  const configs = [
+    { id: HUMAN_ID, name: opts.playerName?.trim() || 'You', isAI: false },
+  ];
+  const personaById: Record<string, AIPersonality> = {};
+  pickRegulars(opts.opponents).forEach((persona, i) => {
+    const id = `ai-${i + 1}`;
+    configs.push({ id, name: persona.name, isAI: true });
+    personaById[id] = persona;
+  });
+  return { configs, personaById };
+}
 
 export interface LogEntry {
   id: number;
@@ -43,19 +71,14 @@ function describeCards(cards: readonly Card[]): string {
   return cards.map((c) => `${c.rank}${SUIT_GLYPH[c.suit]}`).join(' ');
 }
 
-function buildConfigs(opts: SwitchGameOptions) {
-  const configs = [
-    { id: HUMAN_ID, name: opts.playerName?.trim() || 'You', isAI: false },
-  ];
-  for (let i = 0; i < opts.opponents; i++) {
-    configs.push({ id: `ai-${i + 1}`, name: AI_NAMES[i] ?? `Player ${i + 2}`, isAI: true });
-  }
-  return configs;
-}
-
 export function useSwitchGame(initial: SwitchGameOptions) {
   const [options, setOptions] = useState<SwitchGameOptions>(initial);
-  const [game, setGame] = useState<SwitchState>(() => createSwitchGame(buildConfigs(initial)));
+  // Persisted cast (id → personality) for the current game.
+  const setupRef = useRef<GameSetup | null>(null);
+  if (setupRef.current === null) setupRef.current = buildSetup(initial);
+  const [game, setGame] = useState<SwitchState>(() =>
+    createSwitchGame(setupRef.current!.configs),
+  );
   const [log, setLog] = useState<LogEntry[]>([]);
 
   const gameRef = useRef(game);
@@ -148,8 +171,10 @@ export function useSwitchGame(initial: SwitchGameOptions) {
     const timer = setTimeout(() => {
       const live = gameRef.current;
       if (live.phase !== 'playing') return;
-      if (!getCurrentPlayer(live).isAI) return;
-      apply(chooseSwitchAction(live, optionsRef.current.difficulty));
+      const actor = getCurrentPlayer(live);
+      if (!actor.isAI) return;
+      const persona = setupRef.current?.personaById[actor.id];
+      apply(chooseSwitchAction(live, optionsRef.current.difficulty, persona));
     }, delay);
 
     return () => clearTimeout(timer);
@@ -167,7 +192,9 @@ export function useSwitchGame(initial: SwitchGameOptions) {
     const merged = { ...optionsRef.current, ...opts };
     optionsRef.current = merged;
     setOptions(merged);
-    const fresh = createSwitchGame(buildConfigs(merged));
+    const setup = buildSetup(merged);
+    setupRef.current = setup;
+    const fresh = createSwitchGame(setup.configs);
     gameRef.current = fresh;
     setGame(fresh);
     setLog([]);

@@ -8,4 +8,5 @@ export * from './GameState';
 export * from './FilteredState';
 export * from './Deck';
 export * from './Switch';
+export * from './personality';
 export * from './SwitchAI';

@@ -48,8 +48,8 @@ export function Hero() {
         </p>
 
         <div className="hero-enter-cta flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <Link
-            href="/play"
+          <a
+            href="#about"
             className="inline-flex items-center rounded-lg px-7 py-3 text-sm font-semibold transition-all hover:brightness-110 sm:text-base"
             style={{
               background: "var(--gradient-gold)",
@@ -57,8 +57,8 @@ export function Hero() {
               boxShadow: "0 4px 14px rgba(212, 168, 75, 0.25)",
             }}
           >
-            Play Free on Web
-          </Link>
+            About
+          </a>
           <Link
             href="/sign-in"
             className="inline-flex items-center rounded-lg border px-7 py-3 text-sm font-semibold transition-colors hover:bg-white/5 sm:text-base"
